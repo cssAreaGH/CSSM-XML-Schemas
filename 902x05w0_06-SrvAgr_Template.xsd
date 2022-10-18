@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="urn:ccsds:schema:cssm:1.0.0" xmlns:frm="urn:ccsds:schema:frm:1.0.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ccsds:schema:cssm:1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<!--********************************************************************************************************************** -->
+	<!-- Common CCSDS CSS SM Includes -->
+	<!--********************************************************************************************************************** -->
+	<xsd:include schemaLocation="902x12m1-SmCmnEnt-CmnClss.xsd"/>
+	<xsd:include schemaLocation="902x12m1-SmCmnEnt-InfEntHdr.xsd"/>
+	<xsd:include schemaLocation="902x13m1-AbsEvnt-AbsParm.xsd"/>
+	<!-- for the abstract parameter definition -->
+	<xsd:include schemaLocation="902x05w0_06-ConfPrflCmnClss.xsd"/>
+	<!--********************************************************************************************************************** -->
+	<!-- Custom Project Functional Resource Strata Includes -->
+	<!--********************************************************************************************************************** -->
+	<!--	<xsd:include schemaLocation="SanaRegistry/Antenna.xsd"/> 
+			...
+			etc...
+	-->
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Information type -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="serviceAgreement" type="ServiceAgreementType"/>
+	<xsd:complexType name="ServiceAgreementType">
+		<xsd:complexContent>
+			<xsd:restriction base="SrvMgtInfoEntityType">
+				<xsd:sequence>
+					<xsd:element ref="serviceAgreementHeader" minOccurs="1" maxOccurs="1"/>
+					<xsd:element ref="serviceAgreementData" minOccurs="1" maxOccurs="1"/>
+					<!-- allow multipilicity? -->
+					<!-- allow Config Profile at this level? -->
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA possible statuses -->
+	<!--********************************************************************************************************************** -->
+	<xsd:simpleType name="ServiceAgreementStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TEST"/>
+			<xsd:enumeration value="OPERATIONAL"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Header -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="serviceAgreementHeader" type="ServiceAgreementHeaderType" substitutionGroup="srvMgtHeader"/>
+	<xsd:complexType name="ServiceAgreementHeaderType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtHeaderType">
+				<xsd:sequence>
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="status" type="ServiceAgreementStatusType" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Data -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="serviceAgreementData" type="ServiceAgreementDataType" substitutionGroup="srvMgtData"/>
+	<xsd:complexType name="ServiceAgreementDataType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtDataType">
+				<xsd:sequence>
+					<xsd:element ref="serviceAgreementDetails" minOccurs="1" maxOccurs="1"/>
+					<xsd:element ref="agreedConfigurations" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="serviceAgreementId" type="xsd:string" use="required"/>
+				<xsd:attribute name="serviceAgreementNickname" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Persistent Data -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="serviceAgreementDetails" type="ServiceAgreementDetailsType"/>
+	<xsd:complexType name="ServiceAgreementDetailsType">
+		<xsd:sequence>
+			<xsd:element name="saGeneralInfo" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saStationInfo" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saServiceLevel" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saDataStorageAndDelivery" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saProvidedServices" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saGroundComms" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saTrajectoryInfo" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saSpaceUserNodeChar" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saSpaceUserNodeComms" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saTimplan" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="saLicensingInfo" minOccurs="0" maxOccurs="1"/>
+			
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Agreed Configs Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="agreedConfigurations" type="AgreedConfigurationsType"/>
+	<xsd:complexType name="AgreedConfigurationsType">
+		<xsd:sequence>
+			<xsd:element name="configProfileRef" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="configProfileData" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define abstract Agreed Config Class  -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="agreedConfigProfile" type="AgreedConfigProfileType" abstract="true"/>
+	<xsd:complexType name="AgreedConfigProfileType">
+		<xsd:attribute name="configProfileRef" type="xsd:string"/>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define config profile ref class  -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="configProfileRef" type="ConfigProfileRefType" substitutionGroup="agreedConfigProfile"/>
+	<xsd:complexType name="ConfigProfileRefType">
+		<xsd:complexContent>
+			<xsd:extension base="AgreedConfigProfileType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define config profile ref class  -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="configProfileData" type="ConfigProfileDataType" substitutionGroup="agreedConfigProfile"/>
+	<xsd:complexType name="ConfigProfileDataType">
+		<xsd:complexContent>
+			<xsd:extension base="AgreedConfigProfileType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Station Information Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saStationInfo" type="SaStationInfoType"/>
+	<xsd:complexType name="SaStationInfoType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA General Information Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saGeneralInfo" type="SaGeneralInfoType"/>
+	<xsd:complexType name="SaGeneralInfoType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saServiceLevel" type="SaServiceLevelType"/>
+	<xsd:complexType name="SaServiceLevelType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saDataStorageAndDelivery" type="SaDataStorageAndDeliveryType"/>
+	<xsd:complexType name="SaDataStorageAndDeliveryType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saProvidedServices" type="SaProvidedServicesType"/>
+	<xsd:complexType name="SaProvidedServicesType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saGroundComms" type="SaGroundCommsType"/>
+	<xsd:complexType name="SaGroundCommsType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saLicensingInfo" type="SaLicensingInfoType"/>
+	<xsd:complexType name="SaLicensingInfoType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saSpaceUserNodeChar" type="SaSpaceUserNodeCharType"/>
+	<xsd:complexType name="SaSpaceUserNodeCharType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saSpaceUserNodeComms" type="SaSpaceUserNodeCommsType"/>
+	<xsd:complexType name="SaSpaceUserNodeCommsType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saTimeplan" type="SaTimeplanType"/>
+	<xsd:complexType name="SaTimeplanType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define SA Service Level Parameter Class -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="saTrajectoryInfo" type="SaTrajectoryInfoType"/>
+	<xsd:complexType name="SaTrajectoryInfoType">
+		<xsd:sequence>
+			<xsd:element name="serviceAgreementParameter" type="FrParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>
