@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xsd:schema xmlns="urn:ccsds:schema:cssm:1.0.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ccsds:schema:cssm:1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
-	<xsd:include schemaLocation="902x13m1-AbsEvnt.xsd"/>
-
-	<xsd:element name="configurationProfile" type="ExtendedParameterType" substitutionGroup="abstractParameter"/>
-
-</xsd:schema>
