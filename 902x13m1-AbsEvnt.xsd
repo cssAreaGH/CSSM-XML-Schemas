@@ -1,0 +1,102 @@
+<xsd:schema xmlns="urn:ccsds:schema:cssm:1.0.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ccsds:schema:cssm:1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<!--********************************************************************************************************************** -->
+	<xsd:include schemaLocation="902x13m1-AbsEvnt-AbsParm.xsd"/>
+	<!--********************************************************************************************************************** -->
+	<!-- Define concrete Time parameter type derived from AbstractParameter (defined in schema SchemaCssmAbstractParameter-v1_0_0.xsd  -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="timeParameter" type="TimeParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="TimeParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:sequence>
+				<!-- Force an Event time derived from AbstractEventTime -->
+					<xsd:element ref="abstractEventTime" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define abstract Event time type-->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="abstractEventTime" type="AbstractEventTimeType" abstract="true"/>
+	<xsd:complexType name="AbstractEventTimeType">
+		<xsd:attribute name="epochTimeSystem" type="xsd:string" use="optional" />
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define concrete Event time types -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="absoluteEventTimeA" type="AbsoluteEventTimeAType" substitutionGroup="abstractEventTime"/>
+	<xsd:complexType name="AbsoluteEventTimeAType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractEventTimeType">
+				<xsd:attribute name="absoluteTime" type="CcsdsAsciiTimeCodeAType" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="absoluteEventTimeB" type="AbsoluteEventTimeBType" substitutionGroup="abstractEventTime"/>
+	<xsd:complexType name="AbsoluteEventTimeBType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractEventTimeType">
+				<xsd:attribute name="absoluteTime" type="CcsdsAsciiTimeCodeBType" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="relativeEventTime" type="RelativeEventTimeType" substitutionGroup="abstractEventTime"/>
+	<xsd:complexType name="RelativeEventTimeType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractEventTimeType">
+				<xsd:attribute name="relativeTime" type="xsd:float" use="required"/>
+				<xsd:attribute name="otherEventRef" type="xsd:IDREF" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="relativeToTimeA" type="RelativeToTimeAType" substitutionGroup="abstractEventTime"/>
+	<xsd:complexType name="RelativeToTimeAType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractEventTimeType">
+				<xsd:attribute name="relativeEventTime" type="xsd:float" use="required"/>
+				<xsd:attribute name="absoluteTime" type="CcsdsAsciiTimeCodeAType" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="relativeToTimeB" type="RelativeToTimeBType" substitutionGroup="abstractEventTime"/>
+	<xsd:complexType name="RelativeToTimeBType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractEventTimeType">
+				<xsd:attribute name="relativeEventTime" type="xsd:float" use="required"/>
+				<xsd:attribute name="absoluteTime" type="CcsdsAsciiTimeCodeBType" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define latest and earliest offset types-->
+	<!--********************************************************************************************************************** -->
+	<xsd:simpleType name="LatestOffsetType">
+		<xsd:restriction base="xsd:float">
+			<xsd:minExclusive value="0.0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EarliestOffsetType">
+		<xsd:restriction base="xsd:float">
+			<xsd:maxExclusive value="0.0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define abstract Event type-->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="abstractEvent" type="AbstractEventType" abstract="true"/>
+	<xsd:complexType name="AbstractEventType">
+		<xsd:sequence>
+			<!-- allow an Event time derived from AbstractEventTime -->
+			<xsd:element ref="abstractEventTime" minOccurs="1" maxOccurs="1"/>
+			<!-- allow a list of parameters derived from AbstractParameter -->
+			<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="xsd:string" use="optional"/>
+		<xsd:attribute name="user" type="xsd:string" use="optional"/>
+		<xsd:attribute name="description" type="xsd:string" use="optional"/>
+		<xsd:attribute name="latestOffset" type="LatestOffsetType" use="optional"/>
+		<xsd:attribute name="earliestOffset" type="EarliestOffsetType" use="optional"/>
+		<xsd:attribute name="identifier" type="xsd:ID" use="optional"/>
+	</xsd:complexType>
+</xsd:schema>

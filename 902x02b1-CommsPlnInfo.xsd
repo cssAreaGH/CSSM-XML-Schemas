@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="urn:ccsds:schema:cssm:1.0.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ccsds:schema:cssm:1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xsd:include schemaLocation="902x12m1-SmCmnEnt-AbsEvnt.xsd"/>
+	<xsd:include schemaLocation="902x12m1-SmCmnEnt-CmnClss.xsd"/>
+	<xsd:include schemaLocation="902x12m1-SmCmnEnt-InfEntHdr.xsd"/>
+	
+
+<!--********************************************************************************************************************** -->
+<!-- Define Planning Information type -->
+<!--********************************************************************************************************************** -->
+
+
+	<xsd:element name="commsPlanningInfo" type="CommsPlanningInfoType"/>
+	<xsd:complexType name="CommsPlanningInfoType">
+		<xsd:complexContent>
+			<xsd:restriction base="SrvMgtInfoEntityType">
+				<xsd:sequence>
+					<xsd:element ref="commsPlanningInfoHeader" minOccurs="1" maxOccurs="1" />
+					<xsd:element ref="commsPlanningInfoData" minOccurs="1" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:restriction>			
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+
+<!--********************************************************************************************************************** -->
+<!-- Define Planning Information possible statuses -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:simpleType name="CommsPlanningInfoStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TEST"/>
+			<xsd:enumeration value="OPERATIONAL"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+<!--********************************************************************************************************************** -->
+<!-- Define Planning Information Header -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:element name="commsPlanningInfoHeader" type="CommsPlanningInfoHeaderType" substitutionGroup="srvMgtHeader"/>
+	<xsd:complexType name="CommsPlanningInfoHeaderType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtHeaderType">
+				<xsd:sequence>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- allow a list of planningInfoTypes -->
+		    		<xsd:element ref="planningInfoTypeList" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="commsPlanningInfoStatus" type="CommsPlanningInfoStatusType" use="required"/>
+				<xsd:attribute name="trajectoryRef" type="xsd:string" use="optional"/>
+				<xsd:attribute name="ancilliaryInfo" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+<!--********************************************************************************************************************** -->
+<!-- Define Planning Information Event Association -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:element name="commsPlanningInfoEventAssociation" type="CommsPlanningInfoEventAssociationType"/>
+	<xsd:complexType name="CommsPlanningInfoEventAssociationType">
+		<xsd:sequence>
+			<xsd:element name="eventRef" type="EventRefType" minOccurs="2" maxOccurs="unbounded"/>
+			<!-- allow a list of parameters derived from AbstractParameter -->
+			<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="associationId" type="xsd:string" use="required"/>
+		<xsd:attribute name="associationKind" type="xsd:string" use="required"/>
+		<xsd:attribute name="comment" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+	
+
+	<xsd:complexType name="EventRefType">
+		<xsd:attribute name="ref" type="xsd:IDREF"/>
+	</xsd:complexType>
+
+
+<!--********************************************************************************************************************** -->
+<!-- Define Planning Info Data -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:element name="commsPlanningInfoData" type="CommsPlanningInfoDataType" substitutionGroup="srvMgtData"/>
+	<xsd:complexType name="CommsPlanningInfoDataType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtDataType">
+				<xsd:sequence>
+					<!-- allow a list of events derived from srvMgtAbstractEvent -->
+					<xsd:element ref="srvMgtAbstractEvent" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- allow a list of associations  derived from srvMgtAbstractEvent -->
+					<xsd:element ref="commsPlanningInfoEventAssociation" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	
+<!--********************************************************************************************************************** -->
+<!-- Define abstract Service Management Additional Event -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:element name="srvMgtAbstractAdditionalEvent" type="SrvMgtAbstractAdditionalEventType" substitutionGroup="srvMgtAbstractEvent" abstract="true"/>
+	<xsd:complexType name="SrvMgtAbstractAdditionalEventType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtAbstractEventType">
+ 				<xsd:sequence>
+					<!-- require 0 or 1 classes class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+<!--********************************************************************************************************************** -->
+<!-- Define abstract Service Management Defined Event -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:element name="srvMgtAbstractDefinedEvent" type="SrvMgtAbstractDefinedEventType" substitutionGroup="srvMgtAbstractEvent" abstract="true"/>
+	<xsd:complexType name="SrvMgtAbstractDefinedEventType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtAbstractEventType">
+ 				<xsd:sequence>
+					<!-- require 0 or 1 classes class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+<!--********************************************************************************************************************** -->
+<!-- Define abstract COMMS event and events of type COMMS -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:complexType name="AbstractCommsEventIntermediateStepInDefinitionType" abstract = "true">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtAbstractDefinedEventType">
+				<xsd:attribute name="elevation" type="ElevationType" use="optional"/>
+				<xsd:attribute name="azimuth" type="AzimuthType" use="optional"/>
+				<xsd:attribute name="rtlt" type="RtltType" use="optional"/>
+				<xsd:attribute name="rangeRate" type="RangeRateType" use="optional"/>		
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:element name="abstractCommsEvent" type="AbstractCommsEventType" abstract="true" substitutionGroup="srvMgtAbstractDefinedEvent"/>
+	<xsd:complexType name="AbstractCommsEventType">
+		<xsd:complexContent>
+			<xsd:restriction base="AbstractCommsEventIntermediateStepInDefinitionType">
+				<xsd:sequence>
+					<!--  allow an Event time of type srvMgtEventTime	 -->
+					<xsd:element ref="srvMgtEventTime" minOccurs="1" maxOccurs="1"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- require a class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="user" type="xsd:string" use="required"/>
+				<xsd:attribute name="type" type="xsd:string" use="required" fixed="COMMS"/>
+				<xsd:attribute name="description" type="xsd:string" use="optional"/>
+				<xsd:attribute name="latestOffset" type="LatestOffsetType" use="optional"/>
+				<xsd:attribute name="earliestOffset" type="EarliestOffsetType" use="optional"/>
+				<xsd:attribute name="identifier" type="xsd:ID" use="optional"/>
+				<xsd:attribute name="elevation" type="ElevationType" use="optional"/>
+				<xsd:attribute name="azimuth" type="AzimuthType" use="optional"/>
+				<xsd:attribute name="rtlt" type="RtltType" use="optional"/>
+				<xsd:attribute name="rangeRate" type="RangeRateType" use="optional"/>		
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:element name="elevationAscendingEvent" type="ElevationAscendingEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="ElevationAscendingEventType">
+		<xsd:complexContent>
+			<xsd:restriction base="AbstractCommsEventType">
+				<xsd:sequence>
+					<!--  allow an Event time of type srvMgtEventTime	 -->
+					<xsd:element ref="srvMgtEventTime" minOccurs="1" maxOccurs="1"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- require a class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="user" type="xsd:string" use="required"/>
+				<xsd:attribute name="type" type="xsd:string" use="required" fixed="COMMS"/>
+				<xsd:attribute name="description" type="xsd:string" use="optional"/>
+				<xsd:attribute name="latestOffset" type="LatestOffsetType" use="optional"/>
+				<xsd:attribute name="earliestOffset" type="EarliestOffsetType" use="optional"/>
+				<xsd:attribute name="identifier" type="xsd:ID" use="optional"/>
+				<xsd:attribute name="elevation" type="ElevationType" use="required"/>
+				<xsd:attribute name="azimuth" type="AzimuthType" use="optional"/>
+				<xsd:attribute name="rtlt" type="RtltType" use="optional"/>
+				<xsd:attribute name="rangeRate" type="RangeRateType" use="optional"/>		
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="elevationDescendingEvent" type="ElevationDescendingEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="ElevationDescendingEventType">
+		<xsd:complexContent>
+			<xsd:restriction base="AbstractCommsEventType">
+				<xsd:sequence>
+					<!--  allow an Event time of type srvMgtEventTime	 -->
+					<xsd:element ref="srvMgtEventTime" minOccurs="1" maxOccurs="1"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- require a class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="user" type="xsd:string" use="required"/>
+				<xsd:attribute name="type" type="xsd:string" use="required" fixed="COMMS"/>
+				<xsd:attribute name="description" type="xsd:string" use="optional"/>
+				<xsd:attribute name="latestOffset" type="LatestOffsetType" use="optional"/>
+				<xsd:attribute name="earliestOffset" type="EarliestOffsetType" use="optional"/>
+				<xsd:attribute name="identifier" type="xsd:ID" use="optional"/>
+				<xsd:attribute name="elevation" type="ElevationType" use="required"/>
+				<xsd:attribute name="azimuth" type="AzimuthType" use="optional"/>
+				<xsd:attribute name="rtlt" type="RtltType" use="optional"/>
+				<xsd:attribute name="rangeRate" type="RangeRateType" use="optional"/>		
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="maximumElevationEvent" type="MaximumElevationEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="MaximumElevationEventType">
+		<xsd:complexContent>
+			<xsd:restriction base="AbstractCommsEventType">
+				<xsd:sequence>
+					<!--  allow an Event time of type srvMgtEventTime	 -->
+					<xsd:element ref="srvMgtEventTime" minOccurs="1" maxOccurs="1"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- require a class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="user" type="xsd:string" use="required"/>
+				<xsd:attribute name="type" type="xsd:string" use="required" fixed="COMMS"/>
+				<xsd:attribute name="description" type="xsd:string" use="optional"/>
+				<xsd:attribute name="latestOffset" type="LatestOffsetType" use="optional"/>
+				<xsd:attribute name="earliestOffset" type="EarliestOffsetType" use="optional"/>
+				<xsd:attribute name="identifier" type="xsd:ID" use="optional"/>
+				<xsd:attribute name="elevation" type="ElevationType" use="required"/>
+				<xsd:attribute name="azimuth" type="AzimuthType" use="optional"/>
+				<xsd:attribute name="rtlt" type="RtltType" use="optional"/>
+				<xsd:attribute name="rangeRate" type="RangeRateType" use="optional"/>		
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="occultationStartEvent" type="OccultationStartEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="OccultationStartEventType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractCommsEventType">
+				<xsd:attribute name="celestialBody" type="CelestialBodyType" use="required"/>
+				<xsd:attribute name="occType" type="OccTypeType" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="occultationEndEvent" type="OccultationEndEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="OccultationEndEventType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractCommsEventType">
+				<xsd:attribute name="celestialBody" type="CelestialBodyType" use="required"/>
+				<xsd:attribute name="occType" type="OccTypeType" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="sunAlignmentAngleEvent" type="SunAlignmentAngleEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="SunAlignmentAngleEventType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractCommsEventType">
+				<xsd:attribute name="angle" type="AngleType" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="rangeEvent" type="RangeEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="RangeEventType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractCommsEventType">
+				<xsd:attribute name="range" type="RangeType" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="rangeRateEvent" type="RangeRateEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="RangeRateEventType">
+		<xsd:complexContent>
+			<xsd:restriction base="AbstractCommsEventType">
+				<xsd:sequence>
+					<!--  allow an Event time of type srvMgtEventTime	 -->
+					<xsd:element ref="srvMgtEventTime" minOccurs="1" maxOccurs="1"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- require a class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="user" type="xsd:string" use="required"/>
+				<xsd:attribute name="type" type="xsd:string" use="required" fixed="COMMS"/>
+				<xsd:attribute name="description" type="xsd:string" use="optional"/>
+				<xsd:attribute name="latestOffset" type="LatestOffsetType" use="optional"/>
+				<xsd:attribute name="earliestOffset" type="EarliestOffsetType" use="optional"/>
+				<xsd:attribute name="identifier" type="xsd:ID" use="optional"/>
+				<xsd:attribute name="elevation" type="ElevationType" use="optional"/>
+				<xsd:attribute name="azimuth" type="AzimuthType" use="optional"/>
+				<xsd:attribute name="rtlt" type="RtltType" use="optional"/>
+				<xsd:attribute name="rangeRate" type="RangeRateType" use="required"/>		
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="rtltEvent" type="RtltEventType" substitutionGroup="abstractCommsEvent"/>
+	<xsd:complexType name="RtltEventType">
+		<xsd:complexContent>
+			<xsd:restriction base="AbstractCommsEventType">
+				<xsd:sequence>
+					<!--  allow an Event time of type srvMgtEventTime	 -->
+					<xsd:element ref="srvMgtEventTime" minOccurs="1" maxOccurs="1"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- require a class derived from apertureLocation -->
+					<xsd:element ref="apertureLocation" minOccurs="1" maxOccurs="1"/>
+				</xsd:sequence>
+				<xsd:attribute name="user" type="xsd:string" use="required"/>
+				<xsd:attribute name="type" type="xsd:string" use="required" fixed="COMMS"/>
+				<xsd:attribute name="description" type="xsd:string" use="optional"/>
+				<xsd:attribute name="latestOffset" type="LatestOffsetType" use="optional"/>
+				<xsd:attribute name="earliestOffset" type="EarliestOffsetType" use="optional"/>
+				<xsd:attribute name="identifier" type="xsd:ID" use="optional"/>
+				<xsd:attribute name="elevation" type="ElevationType" use="optional"/>
+				<xsd:attribute name="azimuth" type="AzimuthType" use="optional"/>
+				<xsd:attribute name="rtlt" type="RtltType" use="required"/>
+				<xsd:attribute name="rangeRate" type="RangeRateType" use="optional"/>		
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="retCommsStartEvent" type="AbstractCommsEventType" substitutionGroup="abstractCommsEvent"/>
+
+	<xsd:element name="retCommsEndEvent" type="AbstractCommsEventType" substitutionGroup="abstractCommsEvent"/>
+	
+	<xsd:element name="fwdCommsStartEvent" type="AbstractCommsEventType" substitutionGroup="abstractCommsEvent"/>
+	
+	<xsd:element name="fwdCommsEndEvent" type="AbstractCommsEventType" substitutionGroup="abstractCommsEvent"/>
+	
+	<xsd:element name="providerLimitationStartEvent" type="AbstractCommsEventType" substitutionGroup="abstractCommsEvent"/>
+	
+	<xsd:element name="providerLimitationEndEvent" type="AbstractCommsEventType" substitutionGroup="abstractCommsEvent"/>
+
+
+<!--********************************************************************************************************************** -->
+<!-- Define attribute types required by Planning Info Defined events -->
+<!--********************************************************************************************************************** -->
+
+	<xsd:simpleType name="ElevationType" >
+		<xsd:restriction base="xsd:float">
+			<xsd:minInclusive value="-90.0" />
+			<xsd:maxExclusive value="90.0" />				
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="AzimuthType" >
+		<xsd:restriction base="xsd:float">
+			<xsd:minInclusive value="0.0" />
+			<xsd:maxExclusive value="360.0" />				
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="AngleType" >
+		<xsd:restriction base="xsd:float">
+			<xsd:minInclusive value="0.0" />
+			<xsd:maxExclusive value="180.0" />				
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="CelestialBodyType" >
+		<xsd:restriction base="xsd:string" />
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="OccTypeType" >
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CELESTIALBODY"/>
+			<xsd:enumeration value="ATMOSPHERE"/>
+			<xsd:enumeration value="UMBRA"/>
+			<xsd:enumeration value="PENUMBRA"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="RangeType" >
+		<xsd:restriction base="xsd:double">
+			<xsd:minInclusive value="0.0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="RangeRateType" >
+		<xsd:restriction base="xsd:double">
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="RtltType" >
+		<xsd:restriction base="xsd:double">
+			<xsd:minInclusive value="0.0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema>

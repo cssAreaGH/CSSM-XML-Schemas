@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="urn:ccsds:schema:cssm:1.0.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ccsds:schema:cssm:1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xsd:include schemaLocation="902x13m1-AbsEvnt-TimCde.xsd"/>
+	<xsd:include schemaLocation="902x13m1-AbsEvnt-AbsParm.xsd"/>
+	<xsd:include schemaLocation="902x12m1-SmCmnEnt-InfEntHdr.xsd"/>
+	<!--********************************************************************************************************************** -->
+	<!--** Simple Schedule types and elements ** -->
+	<xsd:element name="simpleSchedule" type="SimpleScheduleType"/>
+	<xsd:complexType name="SimpleScheduleType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtInfoEntityType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="SimpleScheduleStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TEST"/>
+			<xsd:enumeration value="PROVISIONAL"/>
+			<xsd:enumeration value="OPERATIONAL"/>
+			<xsd:enumeration value="OTHER"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="InclusionType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OVERLAP_INCLUSION"/>
+			<xsd:enumeration value="START_INCLUSION"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="simpleScheduleHeader" type="SimpleScheduleHeaderType" substitutionGroup="srvMgtHeader"/>
+	<xsd:complexType name="SimpleScheduleHeaderType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtHeaderType">
+				<xsd:sequence>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="status" type="SimpleScheduleStatus" use="required"/>
+				<xsd:attribute name="inclusionType" type="InclusionType" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="scheduledPackage" type="ScheduledPackageType" substitutionGroup="srvMgtData"/>
+	<xsd:complexType name="ScheduledPackageType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtDataType">
+				<xsd:sequence>
+					<xsd:element name="servicePackageXRef" type="ServicePackageXRefType" minOccurs="0"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="scheduledActivity" type="ScheduledActivityType" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="scheduledPackageId" type="xsd:ID" use="required"/>
+				<xsd:attribute name="user" type="xsd:string" use="required"/>
+				<xsd:attribute name="originatingRequestId" type="xsd:string"/>
+				<xsd:attribute name="comment" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ScheduledActivityType">
+		<xsd:sequence>
+			<xsd:element name="serviceInfo" type="ServiceInfoType" maxOccurs="unbounded"/>
+			<!-- allow a list of parameters derived from AbstractParameter -->
+			<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="scheduledActivityId" type="xsd:string" use="required"/>
+		<xsd:attribute name="activityStatus" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="COMMITTED"/>
+					<xsd:enumeration value="TENTATIVE"/>
+					<xsd:enumeration value="AVAILABLE"/>
+					<xsd:enumeration value="UNAVAILABLE"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="siteRef" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>SANA-registered value</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="apertureRef" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>SANA-registered value</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="beginningOfActivity" type="CcsdsAsciiTimeCodeBType"/>
+		<xsd:attribute name="beginningOfTrack" type="CcsdsAsciiTimeCodeBType" use="required"/>
+		<xsd:attribute name="endOfTrack" type="CcsdsAsciiTimeCodeBType" use="required"/>
+		<xsd:attribute name="endOfActivity" type="CcsdsAsciiTimeCodeBType"/>
+		<xsd:attribute name="orbitNumber" type="xsd:nonNegativeInteger"/>
+	</xsd:complexType>
+	<xsd:complexType name="ServicePackageXRefType">
+		<xsd:attribute name="serviceAgreementRef" type="xsd:string" use="required"/>
+		<xsd:attribute name="servicePackageRef" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="scheduledPkgAssn" substitutionGroup="srvMgtData">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="ScheduledPkgAssnType"/>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="ScheduledPkgAssnType">
+		<xsd:complexContent>
+			<xsd:extension base="SrvMgtDataType">
+				<xsd:sequence>
+					<xsd:element name="scheduledPackageIdRef" type="ScheduledPackageIdRefType" minOccurs="1" maxOccurs="unbounded"/>
+					<xsd:element name="externalSchedPkgIdRef" type="ExternalSchedPkgIdRefType" minOccurs="0" maxOccurs="unbounded"/>
+					<!-- allow a list of parameters derived from AbstractParameter -->
+					<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="associationId" type="xsd:string" use="required"/>
+				<xsd:attribute name="associationKind" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>SANA-registered value</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="comment" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ScheduledPackageIdRefType">
+		<xsd:attribute name="ref" type="xsd:IDREF"/>
+	</xsd:complexType>
+	<xsd:complexType name="ExternalSchedPkgIdRefType">
+		<xsd:attribute name="ref" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ServiceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="APA-AZ/EL"/>
+			<xsd:enumeration value="APA-X/Y"/>
+			<xsd:enumeration value="DELTADOR"/>
+			<xsd:enumeration value="DOPPLER"/>
+			<xsd:enumeration value="OFFLINE-TM-RECORDING"/>
+			<xsd:enumeration value="OFFLINE-TM-PROVISION"/>
+			<xsd:enumeration value="RF-ONLY"/>
+			<xsd:enumeration value="RANGING"/>
+			<xsd:enumeration value="RESERVED"/>
+			<xsd:enumeration value="TBD"/>
+			<xsd:enumeration value="TELECOMMAND"/>
+			<xsd:enumeration value="TELEMETRY"/>
+			<xsd:enumeration value="TEST"/>
+			<xsd:enumeration value="UNUSED"/>
+			<xsd:enumeration value="VLBI"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FrequencyBandType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HF"/>
+			<xsd:enumeration value="VHF"/>
+			<xsd:enumeration value="UHF"/>
+			<xsd:enumeration value="L"/>
+			<xsd:enumeration value="S-NE"/>
+			<xsd:enumeration value="S-DS"/>
+			<xsd:enumeration value="C"/>
+			<xsd:enumeration value="X-NE"/>
+			<xsd:enumeration value="X-DS"/>
+			<xsd:enumeration value="Ku"/>
+			<xsd:enumeration value="K"/>
+			<xsd:enumeration value="Ka-NE"/>
+			<xsd:enumeration value="Ka-DS"/>
+			<xsd:enumeration value="Ka-S"/>
+			<xsd:enumeration value="V"/>
+			<xsd:enumeration value="W"/>
+			<xsd:enumeration value="mm"/>
+			<xsd:enumeration value="O1"/>
+			<xsd:enumeration value="O2"/>
+			<xsd:enumeration value="N/A"/>
+			<xsd:enumeration value="OTHER"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ServiceInfoType">
+		<xsd:sequence>
+			<!-- allow a list of parameters derived from AbstractParameter -->
+			<xsd:element ref="abstractParameter" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="serviceType" type="ServiceType" use="required"/>
+		<xsd:attribute name="frequencyBand" type="FrequencyBandType" use="required"/>
+	</xsd:complexType>
+</xsd:schema>

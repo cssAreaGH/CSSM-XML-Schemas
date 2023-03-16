@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="urn:ccsds:schema:cssm:1.0.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ccsds:schema:cssm:1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xsd:include schemaLocation="902x13m1-AbsEvnt-TimCde.xsd"/>
+	<!--********************************************************************************************************************** -->
+	<!--** Service Management Information Entity Header Types **-->
+	<xsd:complexType name="SrvMgtInfoEntityType">
+		<xsd:sequence>
+			<xsd:element ref="srvMgtHeader">
+				<xsd:annotation>
+					<xsd:documentation>substitution group head element</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="srvMgtData" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>substitution group head element</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="srvMgtHeader" type="SrvMgtHeaderType" abstract="true"/>
+	<xsd:complexType name="SrvMgtHeaderType">
+		<xsd:attribute name="originatingOrganization" type="xsd:string" use="required"/>
+		<xsd:attribute name="generationTime" type="CcsdsAsciiTimeCodeBType" use="required"/>
+		<xsd:attribute name="version" type="xsd:positiveInteger" use="required"/>
+		<xsd:attribute name="startTime" type="CcsdsAsciiTimeCodeBType"/>
+		<xsd:attribute name="endTime" type="CcsdsAsciiTimeCodeBType"/>
+		<xsd:attribute name="purpose" type="xsd:string"/>
+		<xsd:attribute name="description" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:element name="srvMgtData" type="SrvMgtDataType" abstract="true"/>
+	<xsd:complexType name="SrvMgtDataType" abstract="true"/>
+</xsd:schema>

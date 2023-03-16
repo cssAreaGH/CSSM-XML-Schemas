@@ -1,0 +1,110 @@
+<xsd:schema xmlns="urn:ccsds:schema:cssm:1.0.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ccsds:schema:cssm:1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<!--********************************************************************************************************************** -->
+	<xsd:include schemaLocation="902x13m1-AbsEvnt-TimCde.xsd"/>
+	<!--********************************************************************************************************************** -->
+	<!-- Define abstract parameter -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="abstractParameter" type="AbstractParameterType" abstract="true"/>
+	<xsd:complexType name="AbstractParameterType">
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<!--********************************************************************************************************************** -->
+	<!-- Define concrete parameter types -->
+	<!--********************************************************************************************************************** -->
+	<xsd:element name="booleanParameter" type="BooleanParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="BooleanParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="xsd:boolean" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="unsignedIntParameter" type="UnsignedIntParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="UnsignedIntParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="xsd:unsignedInt" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="intParameter" type="IntParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="IntParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="xsd:int" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="floatParameter" type="FloatParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="FloatParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="xsd:float" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="doubleParameter" type="DoubleParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="DoubleParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="xsd:double" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="stringParameter" type="StringParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="StringParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="extendedParameter" type="ExtendedParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="ExtendedParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:sequence>
+					<xsd:any minOccurs="1" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="durationUnIntParameter" type="DurationUnIntParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="DurationUnIntParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="xsd:unsignedInt" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="durationDblParameter" type="DurationDblParameterType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="DurationDblParameterType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" use="required">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:double">
+							<xsd:minInclusive value="0.0"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="timeParameterA" type="TimeParameterAType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="TimeParameterAType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="CcsdsAsciiTimeCodeAType" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="timeParameterB" type="TimeParameterBType" substitutionGroup="abstractParameter"/>
+	<xsd:complexType name="TimeParameterBType">
+		<xsd:complexContent>
+			<xsd:extension base="AbstractParameterType">
+				<xsd:attribute name="value" type="CcsdsAsciiTimeCodeBType" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

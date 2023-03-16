@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simpleSchedule xmlns="urn:ccsds:schema:cssm:1.0.0"
+				xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+				xmlns:emsmodel="platform:/resource/esa.egos.ems.portal.model/schemas/Ems.xsd"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xmlns:xmi="http://www.omg.org/XMI"
+				xmlns:ems="http://esa.egos.ems"
+				xsi:schemaLocation="urn:ccsds:schema:cssm:1.0.0 902x01b1TC1-SmplSchd.xsd http://esa.egos.ems EmsExternal.xsd">
+	<simpleScheduleHeader	originatingOrganization="RKPNI"
+							generationTime="2016-307T13:46:48.247Z"
+							status="TEST"
+							inclusionType="OVERLAP_INCLUSION"
+							version="1"
+							startTime="2016-134T00:00:00.000Z"
+							endTime="2016-164T00:00:00.000Z"
+							purpose="Purpose of the schedule..."
+							description="Schedule description...."/>
+	<scheduledPackage	scheduledPackageId="EVENT-2015.190.11.41.47.243348-821429"
+						user="GAIA"
+						comment="ESOC MCP">
+		<servicePackageXRef serviceAgreementRef="GAIA_Routine_1.daily_TTC.nominal_definition.GAIA"
+							servicePackageRef="EVENT-2015.190.11.41.47.243348-821429"/>
+			<extendedParameter name="configurationProfiles">
+				<ems:configuration_profile	default="true"
+											requirement="TM_requirement"
+											service="telemetryReception">
+					<configuration_profile_name xmlns="">default_setup</configuration_profile_name>
+					<parameter xmlns="" identifier="Throw_event" type="enum">NO</parameter>
+				</ems:configuration_profile>
+			</extendedParameter>
+			<stringParameter name="addtionalStringExample" value="This is an example of an addtional string parameter in a schedule package..."/>
+		<scheduledActivity	scheduledActivityId="EVENT-2015.190.11.41.47.243348-821429"
+							activityStatus="COMMITTED"
+							siteRef="MLG"
+							apertureRef="MLG"
+							beginningOfActivity="2016-134T02:47:52.000Z"
+							beginningOfTrack="2016-134T03:32:52.000Z"
+							endOfTrack="2016-134T10:10:29.000Z"
+							endOfActivity="2016-134T10:25:29.000Z">
+			<serviceInfo	serviceType="TELEMETRY"
+							frequencyBand="X-DS" />
+		</scheduledActivity>
+	</scheduledPackage>
+</simpleSchedule>
